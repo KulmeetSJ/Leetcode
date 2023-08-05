@@ -1,45 +1,51 @@
 class Solution {
 public:
     int orangesRotting(vector<vector<int>>& grid) {
-        
-        int totalOranges = 0;
+        int m = grid.size();
+        int n = grid[0].size();
         queue<pair<int,int>> q;
+        int totalOranges = 0;
         
-        for(int i=0;i<grid.size();i++){
-            for(int j=0;j<grid[0].size();j++){
-                if(grid[i][j]!=0) totalOranges++;
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
                 if(grid[i][j] == 2){
                     q.push({i,j});
                 }
+                if(grid[i][j] != 0) totalOranges++;
             }
         }
         
-        if (totalOranges == 0 ) return 0;
-        if (q.empty()) return -1;
         
-        int dx[4] = {0,0,1,-1};
-        int dy[4] = {1,-1,0,0};
         
-        int minutes = 0,cnt = 0;
+        if(totalOranges == q.size()) return 0;
+        
+        if(q.empty()) return -1;
+        
+        vector<pair<int,int>> directions = {{-1,0},{0,1},{1,0},{0,-1}};
+        int minutes = 0;
+        int cnt = 0;
         
         while(!q.empty()){
             int k = q.size();
-            cnt+=k;
+            
+            cnt += k; // For checking whether all oranges are rotten or not
             while(k--){
-                int x = q.front().first , y = q.front().second;
+                int row = q.front().first;
+                int col = q.front().second;
                 q.pop();
-                for(int i=0;i<4;i++){
-                    int nx = x + dx[i];
-                    int ny = y + dy[i];
-                    if(nx<0 || ny<0 || nx>=grid.size() || ny>=grid[0].size() || grid[nx][ny]!= 1 ) continue;
-                    grid[nx][ny] = 2;
-                    q.push({nx,ny});
-                }
+                for(auto it:directions){
+                    int nrow = row+it.first;
+                    int ncol = col+it.second;
+                    
+                    if(nrow>=0 && nrow<m && ncol>=0 && ncol<n && grid[nrow][ncol] == 1){
+                        grid[nrow][ncol] = 2;
+                        q.push({nrow,ncol});
+                    }
+                } 
             }
             if(!q.empty()) minutes++;
         }
-        
-        if(cnt == totalOranges) return minutes;
-        else return -1;
+     if(totalOranges == cnt) return minutes;
+     else return -1;    
     }
 };
