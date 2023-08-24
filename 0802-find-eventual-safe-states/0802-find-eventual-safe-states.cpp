@@ -1,53 +1,50 @@
 class Solution {
 public:
-    bool dfs(int node,vector<int> &vis,vector<int> &pathVis,vector<vector<int>> &adj,vector<int>& check){
-        vis[node] = 1;
-        pathVis[node] = 1;
-        check[node] = 0;
-        for(auto i: adj[node]){
-            if(!vis[i]){
-                if(dfs(i,vis,pathVis,adj,check)) return true;
-            }
-            else if(pathVis[i] == 1){
-                return true;
-            }
-        }
-        //Suppose a call for a node reached here , it means it is not a part of any cycle so we can mark it check[node] = 1 here
-        check[node] = 1;
-        pathVis[node] = 0;
-    return false;
-    }
     vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
+        int V = graph.size();
+        vector<vector<int>> adjRev(V);
+        
+        for(int i=0;i<V;i++){
+            for(auto it:graph[i]){
+                adjRev[it].push_back(i);
+            }
+        }
+        
+        
+        vector<int> inDegree(V,0);
+        
+        for(int i=0;i<V;i++){
+            for(auto it:adjRev[i]){
+                inDegree[it]++;
+            }
+        }
+        
+        queue<int> q;
+        
+        for(int i=0;i<V;i++){
+            if(inDegree[i] == 0){
+                q.push(i);
+            }
+        }
+        
+        
         vector<int> safe;
-        int n = graph.size();
         
-        vector<vector<int>> adjList(n);
-        
-        for(int i=0;i<n;i++){
-            for(int j=0;j<graph[i].size();j++){
-                adjList[i].push_back(graph[i][j]);
+        while(!q.empty()){
+            int node = q.front();
+            q.pop();
+            safe.push_back(node);
+            
+            for(auto it:adjRev[node]){
+                inDegree[it]--;
+                if(inDegree[it] == 0){
+                    q.push(it);
+                }
             }
         }
         
-        //Now we'll detect cycle
-        vector<int> vis(n,0);
-        vector<int> pathVis(n,0);
-        //We ll use a check array which will store whether node is a safe node or not
-        vector<int> check(n,0);
+        sort(safe.begin(),safe.end());
         
-        for(int i=0;i<n;i++){
-            if(!vis[i]){
-                dfs(i,vis,pathVis,adjList,check);
-            }
-        }
-        
-        for(int i=0;i<check.size();i++){
-            if(check[i] == 1){
-                safe.push_back(i);
-            }
-        }
-        
-        
-    return safe;
+        return safe;        
     }
 };
