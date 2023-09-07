@@ -24,21 +24,24 @@ class Solution {
         }
         
         dist[1] = 0;
-        priority_queue<pair<int,int> , vector<pair<int,int>> , greater<pair<int,int>> > pq;
+        set<pair<int,int>> st;
         
-        pq.push({0,1});
+        st.insert({0,1});
         
-        while(!pq.empty()){
-            int node = pq.top().second;
-            int dis = pq.top().first;
-            pq.pop();
+        while(!st.empty()){
+            auto temp = *(st.begin());
+            int node = temp.second;
+            int dis = temp.first;
+            st.erase(temp);
             for(auto adjNodes: adj[node]){
+                if(st.find(adjNodes) == st.end()){
                 int adjNode = adjNodes.first;
                 int edge_weight = adjNodes.second;
                 if(dis + edge_weight < dist[adjNode]){
                     dist[adjNode] = dis + edge_weight;
-                    pq.push({dist[adjNode],adjNode});
+                    st.insert({dist[adjNode],adjNode});
                     parent[adjNode] = node;
+                }
                 }
             }
         }
