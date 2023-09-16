@@ -24,9 +24,20 @@ class Solution {
         return dp[n];
     }
     
+    int fibo_space(int n){
+        int prev2 = 0 , prev1 = 1 , curr = -1;
+        for(int i=2;i<=n;i++){
+            curr =  ( prev2%MOD + prev1%MOD )%MOD;
+            prev2 = prev1;
+            prev1 = curr;
+        }
+    return curr;
+    }
+    
     int nthFibonacci(int n){
-        vector<int> dp(n+1,-1);
-        return fibo_tab(n);
+        //vector<int> dp(n+1,-1);
+        return fibo_space(n);
+        
     }
 };
 
