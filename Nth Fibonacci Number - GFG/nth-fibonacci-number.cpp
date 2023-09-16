@@ -26,7 +26,7 @@ class Solution {
     
     int nthFibonacci(int n){
         vector<int> dp(n+1,-1);
-        return fibo_memo(n,dp)%MOD;
+        return fibo_tab(n);
     }
 };
 
