@@ -13,10 +13,7 @@ class Solution{
     void convertToWave(int n, vector<int>& arr){
         
         for(int i=0;i<n-1;i+=2){
-            //cout<<arr[i]<<" "<<arr[i+1];
             swap(arr[i],arr[i+1]);
-            // cout<<endl<<"After Swap "<<endl;
-            // cout<<arr[i]<<" "<<arr[i+1]<<endl;
             
         }
         
