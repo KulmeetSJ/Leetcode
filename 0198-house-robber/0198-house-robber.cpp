@@ -29,9 +29,28 @@ public:
         }
     return dp[n-1];
     }
+    
+    int space_opt(vector<int> nums){
+        int n = nums.size();
+        int prev = nums[0];
+        int sprev = 0;
+        int curr;
+        
+        for(int i = 1;i<n;i++){
+            int pick = nums[i];
+            if(i>1) pick += sprev;
+            
+            int notPick = prev;
+            curr = max(pick,notPick);
+            sprev = prev;
+            prev = curr;
+        }
+    return prev;
+    }
     int rob(vector<int>& nums) {
         //vector<int> dp(nums.size(),-1);
         //return rec_mem(nums.size()-1,nums,dp);
-        return tabu(nums);
+        //return tabu(nums);
+        return space_opt(nums);
     }
 };
