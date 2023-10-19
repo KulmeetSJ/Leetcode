@@ -1,16 +1,18 @@
 class Solution {
 public:
+    int rec_mem(int i,int j,vector<vector<int>>& dp){
+        if(i == 0 && j == 0) return 1;
+        if(i<0 || j<0 )return 0;
+        
+        if(dp[i][j] != -1) return dp[i][j];
+        
+        int up = rec_mem(i-1,j,dp);
+        int left = rec_mem(i,j-1,dp);
+        
+        return dp[i][j] = up+left;
+    }
     int uniquePaths(int m, int n) {
-        int N = m + n - 2;
-        int R = m-1;
-        
-        double ans = 1;
-        
-        for(int i=1;i<=R;i++)
-        {
-            ans = ans * (N-R+i);
-            ans = ans / i;
-        }
-    return (int)ans;
+        vector<vector<int>> dp(m,vector<int>(n,-1));
+        return rec_mem(m-1,n-1,dp);
     }
 };
