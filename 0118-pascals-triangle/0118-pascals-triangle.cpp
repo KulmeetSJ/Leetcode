@@ -1,19 +1,22 @@
 class Solution {
 public:
+    int nCr(int n,int r){
+        long long res = 1;
+        for(int i=0;i<r;i++){
+            res = res * (n-i);
+            res = res/(i+1);
+        }
+        return (int)res;
+    }
     vector<vector<int>> generate(int numRows) {
-        vector<vector<int>> ans(numRows);
-        
-        
-        
-        for(int i=0;i<numRows;i++)
-        {
-            ans[i].resize(i+1);
-            ans[i][0] = ans[i][i] = 1;
-            
-            for(int j=1;j<i;j++)
-            {
-                ans[i][j] = ans[i-1][j-1] + ans[i-1][j];
-            }
+        vector<vector<int>> ans;
+
+        for(int row = 1; row<=numRows;row++){
+        vector<int> temp;
+        for(int col = 1;col<=row;col++){
+           temp.push_back(nCr(row-1,col-1));
+        }
+            ans.push_back(temp);
         }
     return ans;
     }
