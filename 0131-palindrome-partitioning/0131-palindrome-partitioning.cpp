@@ -1,24 +1,23 @@
 class Solution {
 public:
-    bool isPalindrome(string s,int start,int end){
-        while(start<=end){
-            if(s[start++] != s[end--]){
-                return false;
-            }
+    bool isPalindrome(string str,int start,int end){
+        while(start <= end){
+            if(str[start] != str[end]) return false;
+            start++ , end--;
         }
     return true;
     }
-    
-    void solve(int index,vector<string> &ds,string &s,vector<vector<string>> &ans){
-        if(index == s.length()){
+    void solve(int idx,string s,vector<string>& ds,vector<vector<string>> &ans){
+        
+        if(idx >= s.size()){
             ans.push_back(ds);
             return;
         }
         
-        for(int i=index;i<s.length();i++){
-            if(isPalindrome(s,index,i)){
-                ds.push_back(s.substr(index,i-index+1));
-                solve(i+1,ds,s,ans);
+        for(int i=idx;i<s.length();i++){
+            if(isPalindrome(s,idx,i)){
+                ds.push_back(s.substr(idx,i-idx+1));
+                solve(i+1,s,ds,ans);
                 ds.pop_back();
             }
         }
@@ -27,8 +26,8 @@ public:
         vector<vector<string>> ans;
         vector<string> ds;
         
-        solve(0,ds,s,ans);
+        solve(0,s,ds,ans);
         
-        return ans;
+    return ans;
     }
 };
