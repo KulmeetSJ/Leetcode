@@ -11,43 +11,37 @@
 class Solution {
 public:
     bool isPalindrome(ListNode* head) {
-        ListNode* slow = head, *fast = head;
-        
         if(head == NULL || head->next == NULL) return true;
         
-        //Find middle of linkedList
-        while(fast->next !=NULL && fast->next->next!=NULL)
-        {
+        ListNode* fast = head , *slow = head; 
+        
+        while(fast->next!=NULL && fast->next->next != NULL){
             slow = slow->next;
             fast = fast->next->next;
         }
         
-        //Reverse right half of LL
-        ListNode* curr = slow->next;
-        ListNode* prev = NULL;
-        ListNode* forw = curr->next;
+        //Now slow is pointing at mid
+        //Reverse right half
+        ListNode* prev = NULL , *curr=slow->next;
         
-        while(curr!=NULL )
-        {
-            forw = curr->next;
+        while(curr != NULL ){
+            ListNode* forw = curr->next;
             curr->next = prev;
             prev = curr;
             curr = forw;
         }
         
+        ListNode* p = head;
         slow->next = prev;
-        
-        //Start traversing from middle
-        ListNode* dummy = head;
         slow = slow->next;
         
-        while(slow != NULL)
-        {   
-            if(dummy->val != slow->val) return false;
+        while(slow != NULL){
+            if(slow->val != p->val){
+                return false;
+            }
             slow = slow->next;
-            dummy = dummy->next;
+            p = p->next;
         }
-        
-      return true; 
+    return true;
     }
 };
