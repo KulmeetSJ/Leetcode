@@ -1,44 +1,35 @@
 class Solution {
 public:
-    void merge(vector<int>& nums,int low,int mid,int high){
-        int i = low , j = mid+1,k = low;
-        int temp[high+1];
-        while(i<=mid && j<=high){
-            if(nums[i] <= nums[j]){
-                temp[k++] = nums[i];
-                i++;
-            }
-            else{
-                temp[k++] = nums[j];
-                j++;
-            }
+    void heapify(vector<int>& nums,int i,int n){
+        int largest = i;
+        int lchild = 2*i+1 , rchild = 2*i+2;
+        if(lchild<n && nums[lchild] > nums[largest]){
+            largest = lchild;
+        }
+        if(rchild < n && nums[rchild] > nums[largest]){
+            largest = rchild;
         }
         
-        while(i<=mid){
-            temp[k++] = nums[i];
-            i++;
-        }
-        while(j<=high){
-            temp[k++] = nums[j];
-            j++;
-        }
-        
-        for(int i=low;i<=high;i++){
-            nums[i] = temp[i];
+        if(largest != i){
+            swap(nums[i],nums[largest]);
+            heapify(nums,largest,n);
         }
     }
-    void mergeSort(vector<int>& nums,int low,int high){
-        if(low >=high) return;
-        int mid = (low+high)/2;
+    
+    void heapSort(vector<int>& nums,int n){
+        for(int i=n/2-1;i>=0;i--){
+            heapify(nums,i,n);
+        }
         
-        mergeSort(nums,low,mid);
-        mergeSort(nums,mid+1,high);
-        
-        merge(nums,low,mid,high);
+        for(int i=nums.size()-1;i>=0;i--){
+            swap(nums[0],nums[i]);
+            heapify(nums,0,i);
+        }
     }
+    
     vector<int> sortArray(vector<int>& nums) {
         int n = nums.size();
-        mergeSort(nums,0,n-1);
+        heapSort(nums,n);
     return nums;
     }
 };
