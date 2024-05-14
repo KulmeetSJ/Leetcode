@@ -1,30 +1,39 @@
+#define vi vector<int>
+#define vvi vector<vector<int>>
+#define pb push_back
+#define pob pop_back
+
 class Solution {
 public:
-    void combinations(int ind,vector<int> &candidates,int target,
-                      vector<vector<int>> &ans,vector<int> &ds){
-        if(target == 0){
-            ans.push_back(ds);return;
-        }
-        
-        
-        for(int i=ind;i<candidates.size();i++){
-            if(i>ind && candidates[i] == candidates[i-1]) continue;
-            if(candidates[i] > target) break;
-            
-            ds.push_back(candidates[i]);
-            combinations(i+1,candidates,target-candidates[i],ans,ds);
-            ds.pop_back();
-        }
-        
-                
-    }
-    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
-        vector<vector<int>> ans;
-        vector<int>ds;
-        sort(candidates.begin(),candidates.end());
+    void helper(int idx, vi &candidates, int n, int target, vvi &ans, vi &ds ) {
+	if (target == 0) {
+		ans.pb(ds);
+		return;
+	}
+
+
+	for (int i = idx; i < n; i++) {
+		if (i > idx && candidates[i] == candidates[i - 1]) continue;
+
+		if (candidates[i] > target) break;
+
+		ds.pb(candidates[i]);
+		helper(i + 1, candidates, n, target - candidates[i], ans, ds);
+		ds.pob();
+	}
+}
+    
+    
+    vvi combinationSum2(vi& candidates, int target) {
         int n = candidates.size();
-        combinations(0,candidates,target,ans,ds);
-        
-     return ans;
+
+	vvi ans;
+	vi ds;
+
+	sort(candidates.begin(), candidates.end());
+
+	helper(0, candidates, n, target, ans, ds);
+
+	return ans;
     }
 };
