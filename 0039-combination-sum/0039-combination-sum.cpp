@@ -1,31 +1,36 @@
+
+#define vi vector<int>
+#define vvi vector<vector<int>>
+
 class Solution {
 public:
-    void combinations(int ind,vector<int>& candidates,int target,int sum,vector<vector<int>> &ans,vector<int> &ds){
-        
-        if(ind >= candidates.size()){
-            if(target == sum){
-                ans.push_back(ds);
-            }
-            return;
-        }
-        //Take
-        if(candidates[ind] + sum <= target){
-        ds.push_back(candidates[ind]);
-        sum += candidates[ind];
-        combinations(ind,candidates, target,sum,ans,ds);
-        ds.pop_back();
-        sum -= candidates[ind];
-        }
-        
-        //Not Take
-        combinations(ind+1,candidates,target,sum,ans,ds);        
-    }
-    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
-        vector<vector<int>> ans;
-        vector<int> ds;
-        
-        combinations(0,candidates,target,0,ans,ds);
-        
-        return ans;
+    void helper(int idx, vi &candidates, int n, int target, vvi &ans, vi &ds ) {
+	if (idx >= n) {
+		if (target == 0) {
+			ans.push_back(ds);
+		}
+		return;
+	}
+
+	if (target - candidates[idx] >= 0) {
+		ds.push_back(candidates[idx]);
+		target -= candidates[idx];
+		helper(idx, candidates, n, target, ans, ds);
+		ds.pop_back();
+		target += candidates[idx];
+	}
+
+	helper(idx + 1, candidates, n, target, ans, ds);
+}
+    
+    vvi combinationSum(vector<int>& candidates, int target) {
+        int n = candidates.size();
+
+	vvi ans;
+	vi ds;
+
+	helper(0, candidates, n, target, ans, ds);
+
+	return ans;
     }
 };
