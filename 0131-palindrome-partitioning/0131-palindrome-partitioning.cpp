@@ -1,33 +1,48 @@
+  #define vvs vector<vector<string>>
+#define vs vector<string>
+
 class Solution {
 public:
-    bool isPalindrome(string str,int start,int end){
-        while(start <= end){
-            if(str[start] != str[end]) return false;
-            start++ , end--;
-        }
-    return true;
-    }
-    void solve(int idx,string s,vector<string>& ds,vector<vector<string>> &ans){
-        
-        if(idx >= s.size()){
-            ans.push_back(ds);
-            return;
-        }
-        
-        for(int i=idx;i<s.length();i++){
-            if(isPalindrome(s,idx,i)){
-                ds.push_back(s.substr(idx,i-idx+1));
-                solve(i+1,s,ds,ans);
-                ds.pop_back();
-            }
-        }
-    }
-    vector<vector<string>> partition(string s) {
-        vector<vector<string>> ans;
-        vector<string> ds;
-        
-        solve(0,s,ds,ans);
-        
-    return ans;
-    }
+  
+
+bool isPalin(string str, int left, int right) {
+
+	for (int i = left; i <= right; i++) {
+		if (str[i] != str[right - i + left]) {
+			return false;
+		}
+	}
+	return true;
+}
+
+void helper(int idx, int n, string str, vvs &ans, vs &ds) {
+	if (idx == n) {
+		ans.push_back(ds);
+		return;
+	}
+
+	string temp = "";
+
+	for (int i = idx; i < n; i++) {
+		temp += str[i];
+
+		if (isPalin(str, idx, i)) {
+			ds.push_back(temp);
+			helper(i + 1, n, str, ans, ds);
+			ds.pop_back();
+		}
+	}
+}
+
+vvs partition(string str) {
+	int n = str.length();
+
+	vvs ans;
+	vs ds;
+
+	helper(0, n, str, ans, ds);
+
+	return ans;
+}
+
 };
